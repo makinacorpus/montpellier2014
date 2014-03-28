@@ -22,6 +22,8 @@ if __name__ == '__main__':
     offices = {}
     candidats = {}
     partis = {}
+    G1 = {}
+    total = {}
     with open(fname, 'r') as csv_file:
 
         reader = csv.DictReader(csv_file)
@@ -41,6 +43,9 @@ if __name__ == '__main__':
             num_bureau = row["N\xc2\xb0 Bureau"]
             offices.setdefault(num_bureau, [])
             offices[num_bureau].append({normalized_nom: pourcentage})
+            G1.setdefault(normalized_nom, 0)
+            G1[normalized_nom] += nbr_voix
+            total.setdefault(num_bureau, votants)
             candidats.setdefault(normalized_nom, nom_candidat)
             partis.setdefault(normalized_nom, nom_parti)
             pass
@@ -70,3 +75,9 @@ if __name__ == '__main__':
 
     with open("partis.json", 'w') as outfile:
         response_json = json.dump(partis, outfile)
+
+    total = sum(total.values())
+    G1 = sorted([{nom: float(value) * 100 / float(total)} for nom, value in G1.items()], key=lambda k: k.values()[0], reverse=True)
+
+    with open("resultatsG1.json", 'w') as outfile:
+        response_json = json.dump(G1, outfile) 
