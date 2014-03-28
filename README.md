@@ -1,4 +1,4 @@
-rennes2014
+montpellier2014
 ============
 
 [Cartographie des résultats du 1er tour des élections municipales 2014 à Montpellier](http://makinacorpus.github.io/montpellier2014/), par bureau de vote.
