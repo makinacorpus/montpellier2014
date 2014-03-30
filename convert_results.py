@@ -16,59 +16,64 @@ candidates = {
 
 if __name__ == '__main__':
 
-    fname = "VilleMTP_MTP_Municipale2014_1.csv"
+    fname = "VilleMTP_MTP_Municipale2014_full.csv"
     outfilename = "bureaux_decoupage.json"
     #outfilename = "resultatsG1.json"
-    offices = {}
-    candidats = {}
-    partis = {}
-    G1 = {}
-    total = {}
+    offices = { '275': {}, '276': {} }
+    candidats = {"nuls": "Nuls"}
+    partis = {"nuls": "Nuls"}
+    G = {'275': {"nuls": 0}, '276': {"nuls": 0}}
+    total = {'275': {}, '276': {}}
     with open(fname, 'r') as csv_file:
 
         reader = csv.DictReader(csv_file)
+        current_bureau = ""
+        current_election = ""
 
         for row in reader:
             print row.keys()
             all = row["Candidat"]
+
             nom_candidat = unicode(str(all.split("(")[-1]).split(")")[0].decode("utf8"))
             nom_parti = all.split("(")[0]
             normalized_nom = unicodedata.normalize('NFKD', nom_candidat).encode('ascii', 'ignore').lower().replace(" ", "_")
-            nbr_voix = float(row["Nombre de Voix"])
-            print nbr_voix
-            votants = float(row["Votants"])
-            print votants
-            pourcentage = nbr_voix * 100 / votants
-            print pourcentage
             num_bureau = row["N\xc2\xb0 Bureau"]
-            offices.setdefault(num_bureau, [])
-            offices[num_bureau].append({normalized_nom: pourcentage})
-            G1.setdefault(normalized_nom, 0)
-            G1[normalized_nom] += nbr_voix
-            total.setdefault(num_bureau, votants)
+            num_election = row["N\xc2\xb0 Election"]
+            nbr_voix = float(row["Nombre de Voix"])
+            #print nbr_voix
+            votants = float(row["Votants"])
+            #print votants
+            pourcentage = nbr_voix * 100 / votants
+            #print pourcentage
+
+            offices[num_election].setdefault(num_bureau, [])
+            offices[num_election][num_bureau].append({normalized_nom: pourcentage})
+            
+            G[num_election].setdefault(normalized_nom, 0)
+            G[num_election][normalized_nom] += nbr_voix
+            
+            total[num_election].setdefault(num_bureau, votants)
+            
             candidats.setdefault(normalized_nom, nom_candidat)
             partis.setdefault(normalized_nom, nom_parti)
-            pass
-            #newrow = []
-            #if(row["NIVEAU_DETAIL"] == "bu"):
-            #if(row["NIVEAU_DETAIL"] == "vi"):
-                # Get results for each political list
-                #for i in range(1, 10):
-                    #print("%s -> %s" % ("CANDIDAT_%s" % (i), row["CANDIDAT_%s" % (i)]))
-                    #nom_candidat = unicode(row["CANDIDAT_%s" % (i)].decode("utf8"))
-                    #normalize name
-                    #normalized_nom = unicodedata.normalize('NFKD', nom_candidat).encode('ascii', 'ignore').lower().replace(" ", "_")
-                    #newrow.append({normalized_nom: float(row["POURCENTAGE_%s" % i].replace(",", "."))})
 
-                #results = sorted(newrow, key=lambda k: k.values()[0], reverse=True)
-                #offices[row["NUMERO_LIEU"]] = results
-                #offices = results
-                #break
-    for office in offices.keys():
-        offices[office] = sorted(offices[office], key=lambda k: k.values()[0], reverse=True)
+            if (current_bureau != num_bureau) or (current_election != num_election):
+                offices[num_election][num_bureau].append({"nuls": float(row["Nuls"]) * 100 / votants})
+                G[num_election]["nuls"] += float(row["Nuls"])
+                current_bureau = num_bureau
+                current_election = num_election
+        pass
+    
+    for office in offices["275"].keys():
+        offices["275"][office] = sorted(offices["275"][office], key=lambda k: k.values()[0], reverse=True)
+    for office in offices["276"].keys():
+        offices["276"][office] = sorted(offices["276"][office], key=lambda k: k.values()[0], reverse=True)
 
-    with open("bureaux_decoupage.json", 'w') as outfile:
-        response_json = json.dump(offices, outfile)
+    with open("bureaux_decoupage_1.json", 'w') as outfile:
+        response_json = json.dump(offices["275"], outfile)
+
+    with open("bureaux_decoupage_2.json", 'w') as outfile:
+        response_json = json.dump(offices["276"], outfile)
 
     with open("candidats.json", 'w') as outfile:
         response_json = json.dump(candidats, outfile)
@@ -76,8 +81,13 @@ if __name__ == '__main__':
     with open("partis.json", 'w') as outfile:
         response_json = json.dump(partis, outfile)
 
-    total = sum(total.values())
-    G1 = sorted([{nom: float(value) * 100 / float(total)} for nom, value in G1.items()], key=lambda k: k.values()[0], reverse=True)
+    total1 = sum(total["275"].values())
+    G1 = sorted([{nom: float(value) * 100 / float(total1)} for nom, value in G["275"].items()], key=lambda k: k.values()[0], reverse=True)
+    total2 = sum(total["275"].values())
+    G2 = sorted([{nom: float(value) * 100 / float(total2)} for nom, value in G["276"].items()], key=lambda k: k.values()[0], reverse=True)
 
     with open("resultatsG1.json", 'w') as outfile:
-        response_json = json.dump(G1, outfile) 
+        response_json = json.dump(G1, outfile)
+
+    with open("resultatsG2.json", 'w') as outfile:
+        response_json = json.dump(G2, outfile)

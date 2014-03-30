@@ -1,1 +1,1 @@
-var fullNames = {"chaynes": "Chaynes", "domergue": "Domergue", "salse": "Sals\u00e9", "ressiguier": "Ressiguier", "saurel": "Saurel", "jamet": "Jamet", "francis": "Francis", "balenghien": "Balenghien", "moure": "Moure"}
+var fullNames={"chaynes": "Chaynes", "nuls": "Nuls", "jamet": "Jamet", "salse": "Sals\u00e9", "ressiguier": "Ressiguier", "saurel": "Saurel", "domergue": "Domergue", "francis": "Francis", "balenghien": "Balenghien", "moure": "Moure"}
