@@ -145,7 +145,7 @@
 <!--   <script type="text/javascript" src="http://d3js.org/d3.v2.js"></script> -->
   <script type="text/javascript" src="Control.TouchHover.js"></script>
   <script type="text/javascript" src="VilleMTP_MTP_BureauxVote.geojson"></script>
-  <script type="text/javascript" src="bureaux_decoupage.json"></script>
+  <script type="text/javascript" src="bureaux_decoupage_1.json"></script>
   <script type="text/javascript" src="resultatsG1.json"></script>
   <script type="text/javascript" src="candidats.json"></script>
   <script type="text/javascript" src="partis.json"></script>
@@ -165,7 +165,7 @@
     }
 
     // get color depending on the candidate
-    var colors = {"chaynes": "#9D0000", "domergue": "#4D6BA2", "salse": "#9D0000", "ressiguier": "#FF0000", "saurel": "#EEA2B0", "jamet": "#1B2638", "francis": "#8297BE", "balenghien": "#EEA2B0", "moure": "#e20040"};
+    var colors = {"chaynes": "#9D0000", "domergue": "#4D6BA2", "salse": "#9D0000", "ressiguier": "#FF0000", "saurel": "#EEA2B0", "jamet": "#1B2638", "francis": "#8297BE", "balenghien": "#EEA2B0", "moure": "#e20040", "nuls": "grey"};
     
     //var fullNames = { 'gerard_de_mellon': 'Gerard DE MELLON', 'nathalie_appere': 'Nathalie APPÉRÉ', 'matthieu_theurier': 'Matthieu THEURIER', 'valerie_hamon': 'Valérie HAMON', 'caroline_ollivro': 'Caroline OLLIVRO', 'pierre_priet': 'Pierre PRIET', 'alexandre_noury': 'Alexandre NOURY', 'remy_lescure': 'Rémy LESCURE', 'bruno_chavanat': 'Bruno CHAVANAT'};
 
@@ -180,7 +180,7 @@
     }
 
     function bureauxStyle(feature) {
-      var data = results[feature.properties.Bureau];
+      var data = results1[feature.properties.Bureau];
       var candidat0 = Object.keys(data[0])[0];
       var candidat1 = Object.keys(data[1])[0];
       return {
@@ -246,7 +246,7 @@
 
     legend.update = function (bureau) {
       
-      var data = (bureau) ? results[bureau.Bureau] : resultsG1;
+      var data = (bureau) ? results1[bureau.Bureau] : resultsG1;
       var resultsList = '<ul>';
       for(var key in data) {
         resultsList += generateRowHtml(data[key]);

@@ -58,10 +58,13 @@ if __name__ == '__main__':
             partis.setdefault(normalized_nom, nom_parti)
 
             if (current_bureau != num_bureau) or (current_election != num_election):
-                offices[num_election][num_bureau].append({"nuls": float(row["Nuls"]) * 100 / votants})
-                G[num_election]["nuls"] += float(row["Nuls"])
                 current_bureau = num_bureau
                 current_election = num_election
+                offices[num_election][num_bureau].append({"nuls": float(row["Nuls"]) * 100 / votants})
+                G[num_election].setdefault("nuls", 0)
+                G[num_election]["nuls"] += float(row["Nuls"])
+                #import pdb;
+                #total[num_election].setdefault("nuls", float(row["Nuls"]))
         pass
     
     for office in offices["275"].keys():
@@ -69,25 +72,25 @@ if __name__ == '__main__':
     for office in offices["276"].keys():
         offices["276"][office] = sorted(offices["276"][office], key=lambda k: k.values()[0], reverse=True)
 
-    with open("bureaux_decoupage_1.json", 'w') as outfile:
-        response_json = json.dump(offices["275"], outfile)
+    #with open("bureaux_decoupage_1.json", 'w') as outfile:
+    #    response_json = json.dump(offices["275"], outfile)
 
     with open("bureaux_decoupage_2.json", 'w') as outfile:
         response_json = json.dump(offices["276"], outfile)
 
-    with open("candidats.json", 'w') as outfile:
-        response_json = json.dump(candidats, outfile)
+    #with open("candidats.json", 'w') as outfile:
+    #    response_json = json.dump(candidats, outfile)
 
-    with open("partis.json", 'w') as outfile:
-        response_json = json.dump(partis, outfile)
+    #with open("partis.json", 'w') as outfile:
+    #    response_json = json.dump(partis, outfile)
 
     total1 = sum(total["275"].values())
     G1 = sorted([{nom: float(value) * 100 / float(total1)} for nom, value in G["275"].items()], key=lambda k: k.values()[0], reverse=True)
-    total2 = sum(total["275"].values())
+    total2 = sum(total["276"].values())
     G2 = sorted([{nom: float(value) * 100 / float(total2)} for nom, value in G["276"].items()], key=lambda k: k.values()[0], reverse=True)
 
-    with open("resultatsG1.json", 'w') as outfile:
-        response_json = json.dump(G1, outfile)
+    #with open("resultatsG1.json", 'w') as outfile:
+    #    response_json = json.dump(G1, outfile)
 
     with open("resultatsG2.json", 'w') as outfile:
         response_json = json.dump(G2, outfile)
