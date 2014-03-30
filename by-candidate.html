@@ -155,21 +155,21 @@
   <script type="text/javascript" src="Control.TouchHover.js"></script>
   <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/chroma-js/0.5.2/chroma.min.js"></script>
   <script type="text/javascript" src="VilleMTP_MTP_BureauxVote.geojson"></script>
-  <script type="text/javascript" src="bureaux_decoupage.json"></script>
+  <script type="text/javascript" src="bureaux_decoupage_1.json"></script>
   <script type="text/javascript" src="resultatsG1.json"></script>
   <script type="text/javascript" src="candidats.json"></script>
   <script type="text/javascript" src="partis.json"></script>
   <script type="text/javascript">
 
-    var osmAttrib='Par <a href="http://www.makina-corpus.com" target="_blank">Makina Corpus</a> | <a href="http://rbv.Montpellier.fr/resultats/resultats.php" target="_blank">Données électorales</a> | <a href="http://data.Montpellier-metropole.fr/les-donnees/-/opendata/card/24401-bureaux-de-vote-decoupage-effectif-au-1er-mars-2014" target="_blank">Découpage</a>';
+    var osmAttrib='Par <a href="http://www.makina-corpus.com" target="_blank">Makina Corpus</a> | <a href="https://github.com/makinacorpus/montpellier2014/tree/gh-pages" target="_blank">Code</a> | <a href="http://opendata.montpelliernumerique.fr/Resultats-des-elections-129" target="_blank">Données électorales</a> | <a href="http://opendata.montpelliernumerique.fr/Bureaux-de-vote" target="_blank">Découpage</a>';
 
     var map = L.map('map', {maxZoom: 17, minZoom: 12}).setView([43.611, 3.876944], 13);
 
     // Don't show the 'Powered by Leaflet' text 
     map.attributionControl.setPrefix(osmAttrib);
-    map.setMaxBounds(new L.LatLngBounds(new L.LatLng(43.51,3.7),new L.LatLng(43.67,4.03)));
+    //map.setMaxBounds(new L.LatLngBounds(new L.LatLng(43.51,3.7),new L.LatLng(43.67,4.03)));
 
-    L.tileLayer("http://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png",{attribution:'&copy; Contributeurs <a href="http://osm.org/copyright" target="_blank">OpenStreetMap</a>'}).addTo(map)
+    L.tileLayer("http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png",{subdomains: '1234', attribution:'&copy; Contributeurs <a href="http://osm.org/copyright" target="_blank">OpenStreetMap</a> | Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">'}).addTo(map)
 
     if (L.Browser.touch) {
       L.control.touchHover().addTo(map);
@@ -184,8 +184,8 @@
           scores = {};
           location.hash = current_candidat;
           resultat_candidat = {}
-          for(var key in results) {
-            var bureau_results = results[key];
+          for(var key in results1) {
+            var bureau_results = results1[key];
             for (var i = 0; i < bureau_results.length; i++) {
               var candidat = bureau_results[i];
               for (var name in candidat) {
@@ -216,7 +216,7 @@
           var option = document.createElement("option");
           option.text = fullNames[key];
           option.value = key;
-          if(key==current_candidat) {
+          if(key === current_candidat) {
             option.selected = "selected";
           }
         }
@@ -230,7 +230,7 @@
         legend.update();
       });
 
-      var colors = {"chaynes": "#9D0000", "domergue": "#4D6BA2", "salse": "#9D0000", "ressiguier": "#FF0000", "saurel": "#EEA2B0", "jamet": "#1B2638", "francis": "#8297BE", "balenghien": "#EEA2B0", "moure": "#e20040"};
+      var colors = {"chaynes": "#9D0000", "domergue": "#4D6BA2", "salse": "#9D0000", "ressiguier": "#FF0000", "saurel": "#EEA2B0", "jamet": "#1B2638", "francis": "#8297BE", "balenghien": "#EEA2B0", "moure": "#e20040", "nuls": "black"};
       
       function getColor(candidat, rate) {
         scale = chroma.scale(['white', chroma(colors[candidat]).saturate(50)]);
