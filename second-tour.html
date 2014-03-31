@@ -45,6 +45,7 @@
     }
 
     #title2 {
+      display: inline;
       margin: 0;
     }
 
@@ -269,7 +270,7 @@
         resultsList += generateRowHtml(data[key]);
       };
       resultsList += '</u>';
-      this._div.innerHTML = (bureau) ? ['<b>', bureau.Nom_Bureau, '</b> (n°', bureau.Bureau, ')<br />', resultsList].join("") : '<h3>Résultats à Montpellier 2e tour</h3>' + 'Survolez un bureau de vote pour plus de détails' + resultsList;
+      this._div.innerHTML = (bureau) ? ['<b>', bureau.Nom_Bureau, '</b> (n°', bureau.Bureau, ')<br />', resultsList].join("") : '<h3 style="display:inline;">Résultats à Montpellier 2e tour</h3></br>' + 'Survolez un bureau de vote pour plus de détails' + resultsList;
     };
 
     legend.addTo(map);
