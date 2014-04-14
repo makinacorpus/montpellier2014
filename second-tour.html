@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Élections municipales 2014 à Montpellier</title>
+  <title>Élections municipales 2014 à Montpellier - second tour</title>
   <meta charset="utf-8" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -153,6 +153,7 @@
   <script type="text/javascript" src="VilleMTP_MTP_BureauxVote.geojson"></script>
   <script type="text/javascript" src="bureaux_decoupage_2.json"></script>
   <script type="text/javascript" src="resultatsG2.json"></script>
+  <script type="text/javascript" src="participation2.json"></script>
   <script type="text/javascript" src="candidats.json"></script>
   <script type="text/javascript" src="partis.json"></script>
   <script type="text/javascript">
@@ -269,8 +270,9 @@
       for(var key in data) {
         resultsList += generateRowHtml(data[key]);
       };
-      resultsList += '</u>';
-      this._div.innerHTML = (bureau) ? ['<b>', bureau.Nom_Bureau, '</b> (n°', bureau.Bureau, ')<br />', resultsList].join("") : '<h3 style="display:inline;">Résultats à Montpellier 2e tour</h3></br>' + 'Survolez un bureau de vote pour plus de détails' + resultsList;
+      resultsList += '</ul>';
+
+      this._div.innerHTML = (bureau) ? ['<b>', bureau.Nom_Bureau, '</b> (n°', bureau.Bureau, ')<br />', resultsList,'<p>PARTICIPATION : ' + participation2[bureau.Bureau].toFixed(2) + '%</p>'].join("") : '<h3 style="display:inline;">Résultats à Montpellier 2e tour</h3></br>' + 'Survolez un bureau de vote pour plus de détails' + resultsList;
     };
 
     legend.addTo(map);

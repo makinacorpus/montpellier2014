@@ -152,6 +152,7 @@
   <script type="text/javascript" src="VilleMTP_MTP_BureauxVote.geojson"></script>
   <script type="text/javascript" src="bureaux_decoupage_1.json"></script>
   <script type="text/javascript" src="resultatsG1.json"></script>
+  <script type="text/javascript" src="participation1.json"></script>
   <script type="text/javascript" src="candidats.json"></script>
   <script type="text/javascript" src="partis.json"></script>
   <script type="text/javascript">
@@ -257,7 +258,7 @@
         resultsList += generateRowHtml(data[key]);
       };
       resultsList += '</u>';
-      this._div.innerHTML = (bureau) ? ['<b>', bureau.Nom_Bureau, '</b> (n°', bureau.Bureau, ')<br />', resultsList].join("") : '<h3>Résultats à Montpellier 1er tour</h3></br>' + 'Survolez un bureau de vote pour plus de détails' + resultsList;
+      this._div.innerHTML = (bureau) ? ['<b>', bureau.Nom_Bureau, '</b> (n°', bureau.Bureau, ')<br />', resultsList,'<p>PARTICIPATION : ' + participation1[bureau.Bureau].toFixed(2) + '%</p>'].join("") : '<h3>Résultats à Montpellier 1er tour</h3></br>' + 'Survolez un bureau de vote pour plus de détails' + resultsList;
     };
 
     legend.addTo(map);
